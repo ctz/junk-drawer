@@ -1,0 +1,7 @@
+# The serial number of your inverter.  Visible on the web interface,
+# is of the form "AL[0-9]+"
+serial = ''
+
+# A base64-encoded JWT; get this from the `Authorization` header in
+# the web interface.  It is only valid for a number of hours.
+auth_jwt = ''
