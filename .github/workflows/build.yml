@@ -1,0 +1,36 @@
+permissions:
+  contents: read
+
+on:
+  push:
+  pull_request:
+  merge_group:
+
+jobs:
+  build:
+    name: Build+test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # test a bunch of toolchains on ubuntu
+        rust:
+          - stable
+          - beta
+          - nightly
+        os: [ubuntu-latest]
+        # but only stable on macos/windows (slower platforms)
+        # (elide these on merge_group runs)
+        include:
+          - os: ${{ github.event_name == 'merge_group' && 'ubuntu-latest' || 'macos-latest' }}
+            rust: stable
+          - os: ${{ github.event_name == 'merge_group' && 'ubuntu-latest' || 'windows-latest' }}
+            rust: stable
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Echo
+        run: echo ${{ matrix.rust}} ${{ matrix.os }} ${{ github.event_name }}
+
