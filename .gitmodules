@@ -1,0 +1,4 @@
+[submodule "openssl-bindings-lol/openssl"]
+	path = openssl-bindings-lol/openssl
+	url = https://github.com/openssl/openssl.git
+	branch = openssl-3.2
