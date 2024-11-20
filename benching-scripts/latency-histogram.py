@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import LogLocator, LinearLocator
 import numpy as np
 
 plt.rcParams["svg.fonttype"] = "none"
@@ -20,6 +21,7 @@ def max_bin(samples):
 
 
 order = ("rustls 0.23.16", "OpenSSL 3.0.14", "OpenSSL 3.3.2", "BoringSSL")
+colours = ("dodgerblue", "firebrick", "gold", "forestgreen")
 
 
 def stats(samples, title):
@@ -77,28 +79,33 @@ for out_file, title, samples in [
     bins = np.histogram_bin_edges(samples, bins=128, range=[0, max_bin(samples) * 0.75])
     bins[-1] = max_bin(samples)
     """
-    bins = np.histogram_bin_edges(samples, bins=32)
-    width = (bins[1] - bins[0]) * 0.22
+    bins = np.histogram_bin_edges(samples, bins=128)
+    width = (bins[1] - bins[0]) * 0.9
 
-    f, (top, bot) = plt.subplots(2, sharex=True)
-    top.set_title("Latency distribution")
-    top.set_ylabel("Frequency")
-    top.hist(samples, bins=bins, width=width)
-    bot.set_ylabel("Frequency (log)")
-    bot.hist(samples, bins=bins, log=True, width=width)
-    bot.set_xlabel("Latency (microseconds)")
+    f, plots = plt.subplots(4, sharex=True)
+
+    for log, samp, impl, colour in zip(plots, samples, order, colours):
+        # linear.set_ylabel("freq")
+        # linear.hist(samp, bins=bins, width=width, color=colour)
+        log.hist(samp, bins=bins, log=True, width=width, color=colour)
+        log.yaxis.set_major_locator(LogLocator(subs=(1.0,), numticks=5))
+        log.yaxis.set_minor_locator(LogLocator(subs="auto", numticks=10))
+
+    plots[1].set_ylabel("Frequency (log)")
+    plots[-1].set_xlabel("Latency (microseconds)")
 
     for i in range(len(order)):
         f.text(
-            x=0.1 + (i * 0.2), y=0.05, s=stats(samples[i], order[i]), fontsize="small"
+            x=0.8, y=0.75 - (0.2 * i), s=stats(samples[i], order[i]), fontsize="small"
         )
 
-    for p in (bot, top):
+    for p in plots:
+        p.set_ylim(ymin=1)
         p.set_xlim(xmin=0)
         p.grid(axis="x")
-    f.subplots_adjust(hspace=0, left=0.1, right=0.95, bottom=0.25)
-    f.legend(order)
-    f.suptitle(title)
+    f.subplots_adjust(hspace=0.1, left=0.1, right=0.75)
+    # f.legend(order, color=colours)
+    f.suptitle(title + " latency distribution")
     f.align_ylabels()
     f.set_size_inches(9, 6)
     plt.savefig(out_file, format="svg")
