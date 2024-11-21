@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import LogLocator, LinearLocator
+from matplotlib.ticker import LogLocator, LinearLocator, FuncFormatter
+from matplotlib.scale import InvertedLogTransform
 import numpy as np
 
 plt.rcParams["svg.fonttype"] = "none"
@@ -24,11 +25,20 @@ order = ("rustls 0.23.16", "OpenSSL 3.0.14", "OpenSSL 3.3.2", "BoringSSL")
 colours = ("dodgerblue", "firebrick", "gold", "forestgreen")
 
 
+def format_micros(us):
+    if us >= 1000:
+        return "{:.02f}ms".format(us / 1000)
+    else:
+        return "{:.02f}µs".format(us)
+
+
 def stats(samples, title):
-    return (
-        "{}:\n- min: {:g}μs\n- mean: {:g}μs\n- std dev: {:g}μs\n- max: {:g}μs".format(
-            title, min(samples), np.mean(samples), np.std(samples), max(samples)
-        )
+    return "{}:\n- min: {}\n- mean: {}\n- std dev: {}\n- max: {}".format(
+        title,
+        format_micros(min(samples)),
+        format_micros(np.mean(samples)),
+        format_micros(np.std(samples)),
+        format_micros(max(samples)),
     )
 
 
@@ -74,25 +84,30 @@ for out_file, title, samples in [
         ],
     ),
 ]:
-    """
-    # ensure last bin contains outliers
-    bins = np.histogram_bin_edges(samples, bins=128, range=[0, max_bin(samples) * 0.75])
-    bins[-1] = max_bin(samples)
-    """
-    bins = np.histogram_bin_edges(samples, bins=128)
+    bins = np.histogram_bin_edges(np.log10(samples), bins=128)
     width = (bins[1] - bins[0]) * 0.9
 
     f, plots = plt.subplots(4, sharex=True)
 
-    for log, samp, impl, colour in zip(plots, samples, order, colours):
+    for plot, samp, impl, colour in zip(plots, samples, order, colours):
         # linear.set_ylabel("freq")
         # linear.hist(samp, bins=bins, width=width, color=colour)
-        log.hist(samp, bins=bins, log=True, width=width, color=colour)
-        log.yaxis.set_major_locator(LogLocator(subs=(1.0,), numticks=5))
-        log.yaxis.set_minor_locator(LogLocator(subs="auto", numticks=10))
+        plot.hist(np.log10(samp), bins=bins, width=width, color=colour)
+        # log.yaxis.set_major_locator(LogLocator(subs=(1.0,), numticks=5))
+        # log.yaxis.set_minor_locator(LogLocator(subs="auto", numticks=10))
 
-    plots[1].set_ylabel("Frequency (log)")
-    plots[-1].set_xlabel("Latency (microseconds)")
+    plots[1].set_ylabel("Frequency")
+    plots[-1].set_xlabel("Latency")
+    plots[-1].set_xscale("log")
+
+    def format_x_axis(x, _):
+        if x > 100:
+            return ""
+        v = 10**x
+        return format_micros(v)
+
+    plots[-1].xaxis.set_minor_formatter(FuncFormatter(format_x_axis))
+    plots[-1].xaxis.set_major_formatter(FuncFormatter(format_x_axis))
 
     for i in range(len(order)):
         f.text(
@@ -100,10 +115,10 @@ for out_file, title, samples in [
         )
 
     for p in plots:
-        p.set_ylim(ymin=1)
-        p.set_xlim(xmin=0)
-        p.grid(axis="x")
-    f.subplots_adjust(hspace=0.1, left=0.1, right=0.75)
+        p.set_ylim(ymin=0)
+        p.set_xlim(xmin=np.floor(np.min(np.log10(samples))))
+        p.grid(axis="x", which="both")
+    f.subplots_adjust(hspace=0, left=0.1, right=0.75)
     # f.legend(order, color=colours)
     f.suptitle(title + " latency distribution")
     f.align_ylabels()
