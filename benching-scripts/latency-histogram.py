@@ -33,11 +33,13 @@ def format_micros(us):
 
 
 def stats(samples, title):
-    return "{}:\n- min: {}\n- mean: {}\n- std dev: {}\n- max: {}".format(
+    return "{}:\n- N: {}\n- min: {}\n- mean: {}\n- std dev: {}\n- 99.9%: {}\n- max: {}".format(
         title,
+        len(samples),
         format_micros(min(samples)),
         format_micros(np.mean(samples)),
         format_micros(np.std(samples)),
+        format_micros(np.percentile(samples, 99.9)),
         format_micros(max(samples)),
     )
 
@@ -93,10 +95,10 @@ for out_file, title, samples in [
         # linear.set_ylabel("freq")
         # linear.hist(samp, bins=bins, width=width, color=colour)
         plot.hist(np.log10(samp), bins=bins, width=width, color=colour)
+        plot.set_ylabel(impl)
         # log.yaxis.set_major_locator(LogLocator(subs=(1.0,), numticks=5))
         # log.yaxis.set_minor_locator(LogLocator(subs="auto", numticks=10))
 
-    plots[1].set_ylabel("Frequency")
     plots[-1].set_xlabel("Latency")
     plots[-1].set_xscale("log")
 
@@ -111,7 +113,7 @@ for out_file, title, samples in [
 
     for i in range(len(order)):
         f.text(
-            x=0.8, y=0.75 - (0.2 * i), s=stats(samples[i], order[i]), fontsize="small"
+            x=0.8, y=0.73 - (0.2 * i), s=stats(samples[i], order[i]), fontsize="small"
         )
 
     for p in plots:
