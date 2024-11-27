@@ -117,7 +117,7 @@ for out_file, title, samples in [
 
     for i in range(len(order)):
         tab = plt.table(
-            bbox=[1.10, 3.1 - (1 * i), 0.2, 0.9],
+            bbox=[1.10, 3.1 - (1 * i), 0.15, 0.9],
             edges="open",
             **stats(samples[i], order[i]),
         )
@@ -133,7 +133,7 @@ for out_file, title, samples in [
         p.set_ylim(ymin=0)
         p.set_xlim(xmin=np.floor(np.min(np.log10(samples))))
         p.grid(axis="x", which="both")
-    f.subplots_adjust(hspace=0, left=0.1, right=0.75)
+    f.subplots_adjust(hspace=0, left=0.1, right=0.85)
     # f.legend(order, color=colours)
     f.suptitle(title + " latency distribution")
     f.align_ylabels()
