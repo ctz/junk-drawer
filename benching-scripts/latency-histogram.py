@@ -33,14 +33,18 @@ def format_micros(us):
 
 
 def stats(samples, title):
-    return "{}:\n- N: {}\n- min: {}\n- mean: {}\n- std dev: {}\n- 99.9%: {}\n- max: {}".format(
-        title,
-        len(samples),
-        format_micros(min(samples)),
-        format_micros(np.mean(samples)),
-        format_micros(np.std(samples)),
-        format_micros(np.percentile(samples, 99.9)),
-        format_micros(max(samples)),
+    return dict(
+        rowLabels="min P5 P50 P75 P99 P99.9 max stddev".split(),
+        cellText=[
+            [format_micros(min(samples))],
+            [format_micros(np.percentile(samples, 5))],
+            [format_micros(np.percentile(samples, 50))],
+            [format_micros(np.percentile(samples, 75))],
+            [format_micros(np.percentile(samples, 99))],
+            [format_micros(np.percentile(samples, 99.9))],
+            [format_micros(np.percentile(samples, 100))],
+            [format_micros(np.std(samples))],
+        ],
     )
 
 
@@ -112,9 +116,18 @@ for out_file, title, samples in [
     plots[-1].xaxis.set_major_formatter(FuncFormatter(format_x_axis))
 
     for i in range(len(order)):
-        f.text(
-            x=0.8, y=0.73 - (0.2 * i), s=stats(samples[i], order[i]), fontsize="small"
+        tab = plt.table(
+            bbox=[1.10, 3.1 - (1 * i), 0.2, 0.9],
+            edges="open",
+            **stats(samples[i], order[i]),
         )
+        tab.set_fontsize(8)
+
+    f.text(
+        x=0.8,
+        y=0.05,
+        s="N = {}".format(len(samples[i])),
+    )
 
     for p in plots:
         p.set_ylim(ymin=0)
