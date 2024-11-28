@@ -5,6 +5,7 @@ import numpy as np
 
 plt.rcParams["svg.fonttype"] = "none"
 plt.rcParams["font.sans-serif"] = ["Arial", "DejaVu Sans"]
+plt.rcParams["font.size"] = 8
 
 
 def read(fn):
@@ -95,11 +96,19 @@ for out_file, title, samples in [
 
     f, plots = plt.subplots(4, sharex=True)
 
+    def format_y_axis(value, _):
+        value = int(value)
+        if value == 0:
+            return "0"
+        return "{:}K".format(value // 1000)
+
     for plot, samp, impl, colour in zip(plots, samples, order, colours):
         # linear.set_ylabel("freq")
         # linear.hist(samp, bins=bins, width=width, color=colour)
         plot.hist(np.log10(samp), bins=bins, width=width, color=colour)
         plot.set_ylabel(impl)
+        plot.yaxis.set_minor_formatter(FuncFormatter(format_y_axis))
+        plot.yaxis.set_major_formatter(FuncFormatter(format_y_axis))
         # log.yaxis.set_major_locator(LogLocator(subs=(1.0,), numticks=5))
         # log.yaxis.set_minor_locator(LogLocator(subs="auto", numticks=10))
 
