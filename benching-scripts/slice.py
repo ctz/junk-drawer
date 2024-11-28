@@ -1,7 +1,5 @@
 import sys
 
-_, file, *tags = sys.argv
-
 
 def extract_which(name, parts, default=None):
     try:
@@ -19,13 +17,21 @@ def eq(v, p):
         return True
 
 
-print("threads\thandshake per sec per core")
-for line in open(file):
-    if line.strip() == "":
-        continue
-    parts = line.split("\t")
+def iter_all(file, tags):
+    for line in open(file):
+        if line.strip() == "":
+            continue
+        parts = line.split("\t")
 
-    if all(eq(p, t) for p, t in zip(parts, tags)):
+        if all(eq(p, t) for p, t in zip(parts, tags)):
+            yield parts
+
+
+if __name__ == "__main__":
+    _, file, *tags = sys.argv
+
+    print("threads\thandshake per sec per core")
+    for parts in iter_all(file, tags):
         print(
             "%s\t%s"
             % (

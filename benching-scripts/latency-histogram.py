@@ -21,7 +21,7 @@ def max_bin(samples):
     return max(max(x) for x in samples)
 
 
-order = ("rustls 0.23.16", "OpenSSL 3.0.14", "OpenSSL 3.3.2", "BoringSSL")
+order = ("rustls 0.23.16", "OpenSSL 3.0.14", "OpenSSL 3.4.0", "BoringSSL")
 colours = ("dodgerblue", "firebrick", "gold", "forestgreen")
 
 
@@ -55,7 +55,7 @@ for out_file, title, samples in [
         [
             read("rustls/latency-resume-tls13-server.tsv"),
             read("openssl-3.0.14/latency-resume-tls13-server.tsv"),
-            read("openssl-3.3.2/latency-resume-tls13-server.tsv"),
+            read("openssl-3.4.0/latency-resume-tls13-server.tsv"),
             read("boringssl/latency-resume-tls13-server.tsv"),
         ],
     ),
@@ -65,7 +65,7 @@ for out_file, title, samples in [
         [
             read("rustls/latency-resume-tls12-server.tsv"),
             read("openssl-3.0.14/latency-resume-tls12-server.tsv"),
-            read("openssl-3.3.2/latency-resume-tls12-server.tsv"),
+            read("openssl-3.4.0/latency-resume-tls12-server.tsv"),
             read("boringssl/latency-resume-tls12-server.tsv"),
         ],
     ),
@@ -75,7 +75,7 @@ for out_file, title, samples in [
         [
             read("rustls/latency-fullhs-tls13-server.tsv"),
             read("openssl-3.0.14/latency-fullhs-tls13-server.tsv"),
-            read("openssl-3.3.2/latency-fullhs-tls13-server.tsv"),
+            read("openssl-3.4.0/latency-fullhs-tls13-server.tsv"),
             read("boringssl/latency-fullhs-tls13-server.tsv"),
         ],
     ),
@@ -85,7 +85,7 @@ for out_file, title, samples in [
         [
             read("rustls/latency-fullhs-tls12-server.tsv"),
             read("openssl-3.0.14/latency-fullhs-tls12-server.tsv"),
-            read("openssl-3.3.2/latency-fullhs-tls12-server.tsv"),
+            read("openssl-3.4.0/latency-fullhs-tls12-server.tsv"),
             read("boringssl/latency-fullhs-tls12-server.tsv"),
         ],
     ),
