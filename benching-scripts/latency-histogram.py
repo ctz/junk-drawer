@@ -35,16 +35,12 @@ def format_micros(us):
 
 def stats(samples, title):
     return dict(
-        rowLabels="min P5 P50 P75 P99 P99.9 max stddev".split(),
+        rowLabels="P5 P50 P90 P99".split(),
         cellText=[
-            [format_micros(min(samples))],
             [format_micros(np.percentile(samples, 5))],
             [format_micros(np.percentile(samples, 50))],
-            [format_micros(np.percentile(samples, 75))],
+            [format_micros(np.percentile(samples, 90))],
             [format_micros(np.percentile(samples, 99))],
-            [format_micros(np.percentile(samples, 99.9))],
-            [format_micros(np.percentile(samples, 100))],
-            [format_micros(np.std(samples))],
         ],
     )
 
@@ -126,7 +122,7 @@ for out_file, title, samples in [
 
     for i in range(len(order)):
         tab = plt.table(
-            bbox=[1.10, 3.1 - (1 * i), 0.15, 0.9],
+            bbox=[1.05, 3.1 - (1 * i), 0.15, 0.9],
             edges="open",
             **stats(samples[i], order[i]),
         )
