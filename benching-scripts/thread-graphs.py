@@ -178,6 +178,19 @@ for (x, y), label in [
     ),
     (
         read(
+            rustls_fix_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS13_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "tickets",
+        ),
+        rustls_fix_version,
+    ),
+    (
+        read(
             openssl_3_0_file,
             "handshake-ticket",
             "server",
@@ -207,7 +220,15 @@ for (x, y), label in [
         "BoringSSL",
     ),
 ]:
-    lines.append(plt.plot(x, y, marker="o", linewidth=1, markersize=1, label=label))
+    extra = dict()
+    if label == rustls_version:
+        extra = dict(linestyle="dotted")
+    if label == rustls_fix_version:
+        extra = dict(color=lines[0][0].get_color())
+
+    lines.append(
+        plt.plot(x, y, marker="o", linewidth=1, markersize=1, label=label, **extra)
+    )
 
 
 plt.axvline(x=80, linestyle="dotted", linewidth=0.5)
@@ -222,29 +243,7 @@ plt.gca().set_xlim(xmin=0)
 plt.gca().set_ylim(ymin=0)
 plt.savefig("resumed-13-server.svg", format="svg")
 
-x, y = read(
-    rustls_fix_file,
-    "handshakes",
-    "?",
-    "Rsa2048",
-    "TLS13_AES_256_GCM_SHA384",
-    "server",
-    "server-auth",
-    "tickets",
-)
-label = rustls_fix_version
-
 lines[0][0].set_linestyle("dotted")
-legend.get_texts()[0].set_text(label)
-plt.plot(
-    x,
-    y,
-    marker="o",
-    linewidth=1,
-    markersize=1,
-    label=label,
-    color=lines[0][0].get_color(),
-)
 plt.savefig("resumed-13-server-postfix.svg", format="svg")
 
 
