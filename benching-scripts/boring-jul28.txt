@@ -1,0 +1,44 @@
+env LD_LIBRARY_PATH=../boringssl ./bench bulk ECDHE-RSA-AES128-GCM-SHA256 1048576
+bulk	send	TLSv1/SSLv3	ECDHE-RSA-AES128-GCM-SHA256	8575.27	MB/s
+bulk	recv	TLSv1/SSLv3	ECDHE-RSA-AES128-GCM-SHA256	6986.81	MB/s
+env LD_LIBRARY_PATH=../boringssl ./bench bulk ECDHE-RSA-AES256-GCM-SHA384 1048576
+bulk	send	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	7785.78	MB/s
+bulk	recv	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	6426.88	MB/s
+env LD_LIBRARY_PATH=../boringssl ./bench bulk ECDHE-RSA-CHACHA20-POLY1305 1048576
+bulk	send	TLSv1/SSLv3	ECDHE-RSA-CHACHA20-POLY1305	1847.45	MB/s
+bulk	recv	TLSv1/SSLv3	ECDHE-RSA-CHACHA20-POLY1305	1773.74	MB/s
+env LD_LIBRARY_PATH=../boringssl ./bench bulk TLS_AES_256_GCM_SHA384 1048576
+bulk	send	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	7739.61	MB/s
+bulk	recv	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	6421.36	MB/s
+env LD_LIBRARY_PATH=../boringssl ./bench handshake ECDHE-RSA-AES256-GCM-SHA384
+handshakes	server	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	1447.33	handshakes/s
+handshakes	client	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	5375.06	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench handshake-resume ECDHE-RSA-AES256-GCM-SHA384
+negotiated v=TLSv1/SSLv3 cs=ECDHE-RSA-AES256-GCM-SHA384 kx=X25519
+connects: 0, connects-good: 0, accepts: 0, accepts-good: 0
+sessions: 1, hits: 0, misses: 0
+handshake-resume	server	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	46561.8	handshakes/s
+handshake-resume	client	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	47509.5	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench handshake-ticket ECDHE-RSA-AES256-GCM-SHA384
+negotiated v=TLSv1/SSLv3 cs=ECDHE-RSA-AES256-GCM-SHA384 kx=X25519
+connects: 0, connects-good: 0, accepts: 0, accepts-good: 0
+sessions: 0, hits: 0, misses: 0
+handshake-ticket	server	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	42231.3	handshakes/s
+handshake-ticket	client	TLSv1/SSLv3	ECDHE-RSA-AES256-GCM-SHA384	43484.5	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench handshake TLS_AES_256_GCM_SHA384
+handshakes	server	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	1285.88	handshakes/s
+handshakes	client	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	3125.36	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench handshake-resume TLS_AES_256_GCM_SHA384
+!!! BoringSSL does not support stateful resumption for TLS1.3
+env LD_LIBRARY_PATH=../boringssl ./bench handshake-ticket TLS_AES_256_GCM_SHA384
+negotiated v=TLSv1/SSLv3 cs=TLS_AES_256_GCM_SHA384 kx=X25519MLKEM768
+connects: 0, connects-good: 0, accepts: 0, accepts-good: 0
+sessions: 0, hits: 0, misses: 0
+handshake-ticket	server	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	5803.03	handshakes/s
+handshake-ticket	client	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	4695.79	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench --ecdsa handshake ECDHE-ECDSA-AES256-GCM-SHA384
+handshakes	server	TLSv1/SSLv3	ECDHE-ECDSA-AES256-GCM-SHA384	9096.44	handshakes/s
+handshakes	client	TLSv1/SSLv3	ECDHE-ECDSA-AES256-GCM-SHA384	3454.89	handshakes/s
+env LD_LIBRARY_PATH=../boringssl ./bench --ecdsa handshake TLS_AES_256_GCM_SHA384
+handshakes	server	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	5113.83	handshakes/s
+handshakes	client	TLSv1/SSLv3	TLS_AES_256_GCM_SHA384	2344.76	handshakes/s
