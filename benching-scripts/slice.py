@@ -17,9 +17,14 @@ def eq(v, p):
         return True
 
 
-def iter_all(file, tags):
+def iter_all(file, tags, filter=None):
+    ready = filter is None
     for line in open(file):
         if line.strip() == "":
+            continue
+        if not ready:
+            if filter in line:
+                ready = True
             continue
         parts = line.split("\t")
 
