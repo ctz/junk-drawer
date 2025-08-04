@@ -1,0 +1,49 @@
+g++ -g -Wall -Werror -O3 -std=c++17 -I../openssl/include -L../openssl  bench.cc  -lssl -lcrypto -ldl -lpthread -o bench
+env LD_LIBRARY_PATH=../openssl ./bench bulk ECDHE-RSA-AES128-GCM-SHA256 1048576
+bulk	send	TLSv1.2	ECDHE-RSA-AES128-GCM-SHA256	6565.22	MB/s
+bulk	recv	TLSv1.2	ECDHE-RSA-AES128-GCM-SHA256	7219.67	MB/s
+env LD_LIBRARY_PATH=../openssl ./bench bulk ECDHE-RSA-AES256-GCM-SHA384 1048576
+bulk	send	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	6196.11	MB/s
+bulk	recv	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	6661.3	MB/s
+env LD_LIBRARY_PATH=../openssl ./bench bulk ECDHE-RSA-CHACHA20-POLY1305 1048576
+bulk	send	TLSv1.2	ECDHE-RSA-CHACHA20-POLY1305	2985.76	MB/s
+bulk	recv	TLSv1.2	ECDHE-RSA-CHACHA20-POLY1305	3108.09	MB/s
+env LD_LIBRARY_PATH=../openssl ./bench bulk TLS_AES_256_GCM_SHA384 1048576
+bulk	send	TLSv1.3	TLS_AES_256_GCM_SHA384	6093.27	MB/s
+bulk	recv	TLSv1.3	TLS_AES_256_GCM_SHA384	6472.3	MB/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake ECDHE-RSA-AES256-GCM-SHA384
+handshakes	server	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	2169	handshakes/s
+handshakes	client	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	3251.54	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake-resume ECDHE-RSA-AES256-GCM-SHA384
+negotiated v=TLSv1.2 cs=ECDHE-RSA-AES256-GCM-SHA384 kx=x25519
+connects: 0, connects-good: 0, accepts: 65537, accepts-good: 65537
+sessions: 1, hits: 65536, misses: 0
+handshake-resume	server	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	21043.1	handshakes/s
+handshake-resume	client	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	19936.5	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake-ticket ECDHE-RSA-AES256-GCM-SHA384
+negotiated v=TLSv1.2 cs=ECDHE-RSA-AES256-GCM-SHA384 kx=x25519
+connects: 0, connects-good: 0, accepts: 65537, accepts-good: 65537
+sessions: 0, hits: 65536, misses: 0
+handshake-ticket	server	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	18391.3	handshakes/s
+handshake-ticket	client	TLSv1.2	ECDHE-RSA-AES256-GCM-SHA384	19773	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake TLS_AES_256_GCM_SHA384
+handshakes	server	TLSv1.3	TLS_AES_256_GCM_SHA384	1714.24	handshakes/s
+handshakes	client	TLSv1.3	TLS_AES_256_GCM_SHA384	2222.21	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake-resume TLS_AES_256_GCM_SHA384
+negotiated v=TLSv1.3 cs=TLS_AES_256_GCM_SHA384 kx=X25519MLKEM768
+connects: 0, connects-good: 0, accepts: 65537, accepts-good: 65537
+sessions: 65538, hits: 65536, misses: 0
+handshake-resume	server	TLSv1.3	TLS_AES_256_GCM_SHA384	4073.07	handshakes/s
+handshake-resume	client	TLSv1.3	TLS_AES_256_GCM_SHA384	3596.45	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench handshake-ticket TLS_AES_256_GCM_SHA384
+negotiated v=TLSv1.3 cs=TLS_AES_256_GCM_SHA384 kx=X25519MLKEM768
+connects: 0, connects-good: 0, accepts: 65537, accepts-good: 65537
+sessions: 0, hits: 65536, misses: 0
+handshake-ticket	server	TLSv1.3	TLS_AES_256_GCM_SHA384	3771.28	handshakes/s
+handshake-ticket	client	TLSv1.3	TLS_AES_256_GCM_SHA384	3574.86	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench --ecdsa handshake ECDHE-ECDSA-AES256-GCM-SHA384
+handshakes	server	TLSv1.2	ECDHE-ECDSA-AES256-GCM-SHA384	5178.02	handshakes/s
+handshakes	client	TLSv1.2	ECDHE-ECDSA-AES256-GCM-SHA384	2195.55	handshakes/s
+env LD_LIBRARY_PATH=../openssl ./bench --ecdsa handshake TLS_AES_256_GCM_SHA384
+handshakes	server	TLSv1.3	TLS_AES_256_GCM_SHA384	3183.26	handshakes/s
+handshakes	client	TLSv1.3	TLS_AES_256_GCM_SHA384	1650.56	handshakes/s

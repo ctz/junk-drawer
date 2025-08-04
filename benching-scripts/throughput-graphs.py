@@ -14,8 +14,8 @@ def read(fn, *tags, **kwargs):
     raise ValueError(f"Couldn't find {tags} for {fn}")
 
 
-openssl_file = "openssl-jul28.txt"
-openssl_version = "OpenSSL 3.5.0"
+openssl_file = "openssl-jul28-3.5.1.txt"
+openssl_version = "OpenSSL 3.5.1"
 rustls_file = "jul31.txt"
 rustls_version = "rustls 0.23.31"
 boringssl_file = "boring-jul28.txt"
