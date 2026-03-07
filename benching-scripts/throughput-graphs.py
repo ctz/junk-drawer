@@ -14,12 +14,12 @@ def read(fn, *tags, **kwargs):
     raise ValueError(f"Couldn't find {tags} for {fn}")
 
 
-openssl_file = "openssl-jul28-3.5.1.txt"
-openssl_version = "OpenSSL 3.5.1"
-rustls_file = "jul31.txt"
-rustls_version = "rustls 0.23.31"
-boringssl_file = "boring-jul28.txt"
-boringssl_version = "BoringSSL 0.20250701.0"
+openssl_file = "march-7-osl-3.6.1.txt"
+openssl_version = "OpenSSL 3.6.1"
+rustls_file = "march-7-0.23.37.txt"
+rustls_version = "rustls 0.23.37"
+boringssl_file = "march-7-boring.txt"
+boringssl_version = "BoringSSL 30cd935"
 
 
 impls = [
@@ -157,7 +157,7 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2025-07-31-transfer.svg", format="svg")
+plt.savefig("2026-03-07-transfer.svg", format="svg")
 plt.close()
 
 groups = [
@@ -410,7 +410,7 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2025-07-31-full-handshake.svg", format="svg")
+plt.savefig("2026-03-07-full-handshake.svg", format="svg")
 plt.close()
 
 groups = [
@@ -551,5 +551,5 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2025-07-31-resumed-handshake.svg", format="svg")
+plt.savefig("2026-03-07-resumed-handshake.svg", format="svg")
 plt.close()
