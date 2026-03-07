@@ -18,6 +18,8 @@ openssl_file = "march-7-osl-3.6.1.txt"
 openssl_version = "OpenSSL 3.6.1"
 rustls_file = "march-7-0.23.37.txt"
 rustls_version = "rustls 0.23.37"
+rustls_next_file = "march-7-new-api.txt"
+rustls_next_version = "rustls 0.24 next"
 boringssl_file = "march-7-boring.txt"
 boringssl_version = "BoringSSL 30cd935"
 
@@ -26,6 +28,7 @@ impls = [
     boringssl_version,
     openssl_version,
     rustls_version,
+    rustls_next_version
 ]
 
 groups = [
@@ -47,6 +50,14 @@ groups = [
         ),
         read(
             rustls_file,
+            "bulk",
+            "?",
+            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+            "?",
+            "send",
+        ),
+        read(
+            rustls_next_file,
             "bulk",
             "?",
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
@@ -78,6 +89,14 @@ groups = [
             "?",
             "recv",
         ),
+        read(
+            rustls_next_file,
+            "bulk",
+            "?",
+            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+            "?",
+            "recv",
+        ),
     ),
     (
         "transfer, 1.3, aes-256-gcm, sending",
@@ -103,6 +122,14 @@ groups = [
             "?",
             "send",
         ),
+        read(
+            rustls_next_file,
+            "bulk",
+            "?",
+            "TLS13_AES_256_GCM_SHA384",
+            "?",
+            "send",
+        ),
     ),
     (
         "transfer, 1.3, aes-256-gcm, receiving",
@@ -122,6 +149,14 @@ groups = [
         ),
         read(
             rustls_file,
+            "bulk",
+            "?",
+            "TLS13_AES_256_GCM_SHA384",
+            "?",
+            "recv",
+        ),
+        read(
+            rustls_next_file,
             "bulk",
             "?",
             "TLS13_AES_256_GCM_SHA384",
@@ -157,7 +192,7 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2026-03-07-transfer.svg", format="svg")
+plt.savefig("2026-03-07-transfer-next.svg", format="svg")
 plt.close()
 
 groups = [
@@ -179,6 +214,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "no-resume",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "Rsa2048",
@@ -214,6 +259,16 @@ groups = [
             "server-auth",
             "no-resume",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "no-resume",
+        ),
     ),
     (
         "full handshakes, 1.2, ecdsa, client",
@@ -241,6 +296,16 @@ groups = [
             "server-auth",
             "no-resume",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "EcdsaP256",
+            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "no-resume",
+        ),
     ),
     (
         "full handshakes, 1.2, ecdsa, server",
@@ -260,6 +325,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "EcdsaP256",
+            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "no-resume",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "EcdsaP256",
@@ -296,6 +371,16 @@ groups = [
             "server-auth",
             "no-resume",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS13_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "no-resume",
+        ),
     ),
     (
         "full handshakes, 1.3, rsa, server",
@@ -315,6 +400,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS13_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "no-resume",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "Rsa2048",
@@ -352,6 +447,16 @@ groups = [
             "server-auth",
             "no-resume",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "EcdsaP256",
+            "TLS13_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "no-resume",
+        ),
     ),
     (
         "full handshakes, 1.3, ecdsa, server",
@@ -373,6 +478,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "EcdsaP256",
+            "TLS13_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "no-resume",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "EcdsaP256",
@@ -410,7 +525,7 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2026-03-07-full-handshake.svg", format="svg")
+plt.savefig("2026-03-07-full-handshake-next.svg", format="svg")
 plt.close()
 
 groups = [
@@ -440,6 +555,16 @@ groups = [
             "server-auth",
             "sessionid",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "sessionid",
+        ),
     ),
     (
         "resumed handshakes, 1.2, server",
@@ -459,6 +584,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "sessionid",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "Rsa2048",
@@ -495,6 +630,16 @@ groups = [
             "server-auth",
             "tickets",
         ),
+        read(
+            rustls_next_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS13_AES_256_GCM_SHA384",
+            "client",
+            "server-auth",
+            "tickets",
+        ),
     ),
     (
         "resumed handshakes, 1.3, server",
@@ -514,6 +659,16 @@ groups = [
         ),
         read(
             rustls_file,
+            "handshakes",
+            "?",
+            "Rsa2048",
+            "TLS13_AES_256_GCM_SHA384",
+            "server",
+            "server-auth",
+            "tickets",
+        ),
+        read(
+            rustls_next_file,
             "handshakes",
             "?",
             "Rsa2048",
@@ -551,5 +706,5 @@ ax.invert_yaxis()
 ax.set_yticks([x + width for x in range(len(groups))], labels=[x[0] for x in groups])
 fig.subplots_adjust(hspace=0.1, left=0.23, right=0.95, bottom=0.1)
 
-plt.savefig("2026-03-07-resumed-handshake.svg", format="svg")
+plt.savefig("2026-03-07-resumed-handshake-next.svg", format="svg")
 plt.close()
